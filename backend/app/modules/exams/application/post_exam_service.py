@@ -258,9 +258,8 @@ class PostExamService:
         exam_notif = NotificationModel()
         exam_notif.user_id = user_id
         exam_notif.type = NotificationType.EXAM_RESULT
-        exam_notif.title = (
-            f"{'✅ Examen réussi' if result.is_passed else '❌ Examen non validé'} — {result.exam_title}"
-        )
+        status_label = "Examen réussi" if result.is_passed else "Examen non validé"
+        exam_notif.title = f"{status_label} — {result.exam_title}"
         exam_notif.message = (
             f"{result.correct_answers}/{result.total_questions} bonnes réponses "
             f"({result.score_percentage:.1f}%) · +{xp_earned} XP"
@@ -279,7 +278,7 @@ class PostExamService:
             badge_notif = NotificationModel()
             badge_notif.user_id = user_id
             badge_notif.type = NotificationType.BADGE_EARNED
-            badge_notif.title = f"🏆 Nouveau badge : {badge_name}"
+            badge_notif.title = f"Nouveau badge : {badge_name}"
             badge_notif.message = f"Félicitations ! Vous avez débloqué le badge « {badge_name} »."
             badge_notif.payload = {"badge_name": badge_name}
             badge_notif.created_at = now
