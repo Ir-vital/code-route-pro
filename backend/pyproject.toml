@@ -1,0 +1,85 @@
+[project]
+name = "coderoute-pro-backend"
+version = "1.0.0"
+description = "Backend FastAPI — CodeRoute Pro"
+requires-python = ">=3.12"
+dependencies = [
+    # ─── Web framework ─────────────────────────────────────────────────────────
+    "fastapi==0.115.5",
+    "uvicorn[standard]==0.32.1",
+    "python-multipart==0.0.12",
+
+    # ─── Base de données ───────────────────────────────────────────────────────
+    "sqlalchemy==2.0.36",
+    "asyncpg==0.30.0",
+    "alembic==1.14.0",
+
+    # ─── Validation & Paramètres ───────────────────────────────────────────────
+    "pydantic==2.10.3",
+    "pydantic-settings==2.6.1",
+
+    # ─── Sécurité ──────────────────────────────────────────────────────────────
+    "passlib[bcrypt]==1.7.4",
+    "python-jose[cryptography]==3.3.0",
+
+    # ─── Cache / Sessions ──────────────────────────────────────────────────────
+    "redis==5.2.1",
+
+    # ─── Stockage ──────────────────────────────────────────────────────────────
+    "supabase==2.10.0",
+
+    # ─── Logging ───────────────────────────────────────────────────────────────
+    "structlog==24.4.0",
+
+    # ─── HTTP client (Resend email, webhooks) ─────────────────────────────────
+    "httpx==0.28.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Tests
+    "pytest==8.3.4",
+    "pytest-asyncio==0.24.0",
+    "httpx==0.28.1",
+    "pytest-cov==6.0.0",
+    "anyio==4.7.0",
+    "aiosqlite==0.20.0",  # SQLite async pour les tests (conftest.py)
+
+    # Linting & Formatting
+    "ruff==0.8.4",
+    "mypy==1.13.0",
+
+    # Type stubs
+    "types-passlib==1.7.7.20240819",
+    "types-python-jose==3.3.4.20240106",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM", "TCH"]
+ignore = ["B008", "N805"]
+
+[tool.ruff.isort]
+known-first-party = ["app"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = false
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["*/tests/*", "*/migrations/*"]
